@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 
-use App\User;
 use App\Http\Requests;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\ProjectRequest;
+use App\Project;
 use App\Http\Controllers\Controller;
 
-class UserController extends Controller
+class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $model)
+    public function index(Project $model)
     {
-        $user = $model->whereNotNull('deactivated_at')->get();
-        return $user;
+        $projects = $model->whereNotNull('deactivated_at')->get();
+        return $projects;
     }
 
     /**
@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
     /**
@@ -38,17 +38,10 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(User $model, UserRequest $request)
+    public function store(Project $model, ProjectRequest $request)
     {
-        $input = [
-            'username' => $request->username,
-            'email'    => $request->email,
-            'name'     => $request->name,
-            'password' => bcrypt($request->password)
-        ];
-
-        $user = $model->create($input);
-        return $user;
+        $projects = $model->create($request->all());
+        return 'Success';
     }
 
     /**
@@ -57,10 +50,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $model, $id)
+    public function show(Project $model, $id)
     {
-        $user = $model->where($id)->get();
-        return  $user;
+        $projects = $model->where($id)->get();
+        return $projects;
     }
 
     /**
@@ -81,10 +74,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(User $model, UserRequest $request, $id)
+    public function update(Project $model, ProjectRequest $request, $id)
     {
-        $user = $model->find($id)->update($request->all());
-        return $user;
+        $projects = $model->find($id)->update($request->all());
+        return 'Success';
     }
 
     /**
@@ -93,8 +86,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Project $model, $id)
     {
-        //
+        $projects = $model->find($id)->delete();
+        return 'Success';
     }
 }
